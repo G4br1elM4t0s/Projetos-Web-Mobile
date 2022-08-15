@@ -17,7 +17,7 @@ const SpotSchema = new mongoose.Schema({
 
 //erro com a linha a baixo
 SpotSchema.virtual('thumbnail_url').get(function(){
-    return `https://localhost:3000/files/${this.thumbnail}`
+    return `http://localhost:3333/files/${this.thumbnail}`
 })
 
 module.exports = mongoose.model('Spot', SpotSchema);
