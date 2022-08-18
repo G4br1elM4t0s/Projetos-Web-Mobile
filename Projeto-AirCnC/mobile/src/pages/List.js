@@ -21,7 +21,7 @@ export default function List(){
             <Image style={styles.logo} source={logo}/>
 
             <ScrollView>
-            {techs.map(tech =><SpotList  key={tech} tech ={tech}/>)}
+                {techs.map(tech =><SpotList  key={tech} tech ={tech}/>)}
             </ScrollView>
         </SafeAreaView>
     );
