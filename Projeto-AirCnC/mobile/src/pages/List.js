@@ -1,10 +1,10 @@
-import{View, Text, Image,StyleSheet, SafeAreaView} from 'react-native';
-
+import{Text, Image,StyleSheet, SafeAreaView,ScrollView} from 'react-native';
 import React,{useState, useEffect} from 'react';
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import logo from '../assets/logo.png'
+
+import SpotList from '../components/SpotList';
 
 export default function List(){
     const [techs,setTechs] = useState([]);
@@ -15,12 +15,15 @@ export default function List(){
             
             setTechs(techsArray);
         })
-    },[])
+    },[]);
     return (
-    <SafeAreaView>
-        <Image source={logo}/>
-        <Text>{techs}</Text>
-    </SafeAreaView>
+        <SafeAreaView style = {styles.container}>
+            <Image style={styles.logo} source={logo}/>
+
+            <ScrollView>
+            {techs.map(tech =><SpotList  key={tech} tech ={tech}/>)}
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
@@ -30,6 +33,9 @@ const styles = StyleSheet.create({
     },
 
     logo: {
-        height:32
+        height:32,
+        resizeMode: 'contain',
+        alignSelf: 'center',
+        marginTop:45
     }
 })

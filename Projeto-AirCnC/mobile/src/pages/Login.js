@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from "react";
-import { View,KeyboardAvoidingView,Platform, Image, StyleSheet, Text,TextInput, TouchableOpacity } from "react-native";
+import { View,KeyboardAvoidingView,Platform, Image, StyleSheet, Text,TextInput, TouchableOpacity,Alert } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -26,11 +26,16 @@ async function handleSubmit(){
     });
     
     const{_id} = response.data;
+    if(email === "" || email === null){
+      Alert.alert('Email invalido');
+    }else{
+      await AsyncStorage.setItem('user',_id);
+      await AsyncStorage.setItem('techs',techs);
+  
+      navigation.navigate('List');
+    }
 
-    await AsyncStorage.setItem('user',_id);
-    await AsyncStorage.setItem('techs',techs);
-
-    navigation.navigate('List');
+   
 
 }
 
