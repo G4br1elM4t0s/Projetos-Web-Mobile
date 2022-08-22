@@ -6,23 +6,36 @@ const http =  require('http');
 
 const routes = require('./routes'); 
 const socketio = require('socket.io');
+const { default: cluster } = require("cluster");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: '*',
+
   }
 });
-
-io.on('connection',socket=>{
-  console.log('connection user', socket.id);
-})
 
 mongoose.connect('mongodb+srv://Gabriel:a2bdgh7b@cluster0.lsoqold.mongodb.net/?retryWrites=true&w=majority', {
   useNewUrlParser:true,
   useUnifiedTopology:true,
 });
+
+const connectedUsers = {};
+
+io.on('connection',socket=>{
+  const { user_id } = socket.handshake.query;
+
+  connectedUsers[user_id] = socket.id;
+});
+
+app.use((req,res, next)=>{
+  req.io = io;
+  req.connectedUsers = connectedUsers;
+
+  return next();
+})
 
 
 //GET POST PUT DELETE
