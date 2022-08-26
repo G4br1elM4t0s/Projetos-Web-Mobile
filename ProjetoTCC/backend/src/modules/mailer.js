@@ -1,0 +1,29 @@
+//Essa pasta é criada para tudo que for de fora da aplicação 
+const nodemailer = require('nodemailer');
+const hbs = require('nodemailer-express-handlebars');
+const path = require('path');
+
+const {host, port, user, pass} = require("../config/mail.json");
+
+
+const transport = nodemailer.createTransport({
+    host,
+    port,
+    auth: {
+      user,
+      pass,
+    }
+});
+
+//modulo para templete de e-mail;
+transport.use('compile', hbs({
+  viewEngine: {
+    defaultLayout: undefined,
+    partialsDir: path.resolve('./src/resources/mail/')
+  },
+  viewPath: path.resolve('./src/resources/mail/'),
+  extName: '.html',
+}));
+
+
+module.exports = transport;
