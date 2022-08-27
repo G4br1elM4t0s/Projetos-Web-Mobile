@@ -17,7 +17,10 @@ const io = socketio(server, {
   }
 });
 
-mongoose.connect('mongodb+srv://Gabriel:a2bdgh7b@cluster0.lsoqold.mongodb.net/?retryWrites=true&w=majority', {
+const password = "" // digite a senha do seu mongoDB
+const user = ""// digite seu usuario aqui
+
+mongoose.connect(`mongodb+srv://${user}:${password}@cluster0.lsoqold.mongodb.net/?retryWrites=true&w=majority`, {
   useNewUrlParser:true,
   useUnifiedTopology:true,
 });
