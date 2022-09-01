@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authconfig = require("../../config/auth.json");
 const crypto = require("crypto");
+const mailer = require("../../modules/mailer");
 
 
 const router = express.Router();
@@ -59,7 +60,7 @@ router.post("/authenticate", async (req, res) => {
   })
 });
 
-router.post('forgot_password', async (req,res)=>{
+router.post('/forgot_password', async (req,res)=>{
   const {email} = req.body;
 
   try {
@@ -81,7 +82,20 @@ router.post('forgot_password', async (req,res)=>{
       }
     });
 
-    
+    mailer.sendMail({
+      to: email,
+      from: 'gabrielmatos010203@gmail.com',
+      template: 'auth/forgot_password',
+      context: {token} //passando as variaveis, ou sejá nestá linha de código estou mandando a variavel token já criada aqui para o meu 'forgot_password'
+
+    }, (err)=>{
+        if(err){
+          console.log(err)
+          return res.status(400).send({error:'Cannot send forgot password, try again'});
+        }
+
+        return res.send();
+    })
 
   } catch (err) {
     return res.status(400).send({error: "Erro on forgot password,try again"});
